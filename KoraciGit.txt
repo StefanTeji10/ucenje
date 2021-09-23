@@ -83,10 +83,10 @@ Spremanje izmena (commit)
 	
 	Ispravljanje zadnjeg commit-a
 		>>git add <fajl> --> dodamo u index fajl koji treba spojiti sa prethodnim commit-om
+		
 		>>git commit --amend -m "Nova verzija, promenjen <fajl>"
 
-		Naredba --amend govori gitu da izmeni zadnji commit. 
-
+		Naredba --amend govori gitu da izmeni prethodni komit
 		
 	Git gui
 		>>git gui 	--> Gitgui je graficki prikaz gita, koji omogucava odredjene lagodnosti. 		
@@ -150,3 +150,108 @@ Preuzimanje izmena iz jedne u drugu granu
 			--> Drugi nacin je koristeci git mergetool. 
 			
 			>>git config --global merge.tool </putanja/do/programa>		--> C:\ProgramData\Microsoft\Windows\Start Menu\Programs
+				--> meld -- jedan od programa
+				--> DiffMerge -- drugi program
+
+			>>git difftool 			--> pusta u rad prekonfigurisani editor za razlike u fajlu .gitconfig
+			>>git difftool -t <imePrograma>	--> pusta program vimdiff
+			>>git difftool <branch1>/<branch2>	--> origin/master (local host(github)/master branch)
+	
+			!!!Ako nakon neuspelog merge otvorimo fajl u njemu je dodato gde je konflikt
+					
+
+	Merge, branch i istorija projekta
+		
+		Fast forward
+			git merge --no-ff <varijanta> 	--> git automatski po potrebi radi fast-forward, a na ovaj nacin ga mozemo zaobici
+
+	Rebase
+		>>git rebase master 	--> sluzi da napravimo linearnu putanju vise grana
+					--> potrebno je da budemo u grani koju zelimo pomeriti tako da njeni commit-ovi budu u linearnoj ravni sa granom <master> u ovom slucaju. 
+					-->  
+
+		>>git rebase --continue --> nastavak nakon resavanja konflikata
+		
+		>>git rebase --abort	--> odustanak od rebase komande ukoliko ima previse konflikata
+
+
+	Rebase ili ne rebase?	
+		Rebase na kraju krajeva ipak menja istoriju projekta. 
+
+
+	Cherry-pick
+		Posebna verzija merge
+		
+		>>git cherry-pick <commitString> --> merguje samo odredjeni commit, a ne celu granu i sve njene commitove
+
+	Merge bez commita
+		>>git merge <imeGrane> --no-commit 	--> odradjujemo merge ali ne i commit, sada mozemo sami commitati na nacin kako zelimo
+
+		>>git merge <imeGrane> --no-ff --no-commit 	--> jos bolje posto nema opcije da se tokom merge odradi fast-forward
+
+	Squash merge
+		git merge --squash <imeGrane> 	--> Ukoliko zelimo da novi cvor ima izmene iz grane, ali ne zelimo da ima referencu na tu granu. 
+
+
+
+
+Tagovi
+	>>git tag			--> ispisace definicije prethodno definisanih tagova
+	>>git tag <naziv_taga>		--> dodavanje novog taga
+	>>git tag -d <naziv_taga>	--> brisanje postojeceg taga
+
+
+	>>git checkout <broj.broj>	--> primer 1.0 verzija
+	Ukoliko zelimo da projekat vratimo na staro stanje na verziju 1.0 na primer, tacnije kada smo definisali tag <1.0> potrebna je ova komanda iznad.
+	Nakon te komande tu se moze stvoriti nova grana ili vratiti projekat u zadnje stanje sa komandom:
+	>>git checkout HEAD
+
+
+
+
+ISPOD HAUBE
+	SHA1
+		Jednosmerne matematicke funkcije. Lako je dobiti rezultat, a tesko zakljuciti kako je rezultat nastao. !Hash funkcije!
+		SHA1 je string koji ima svaki commit
+	SHA1 ima sledeca svojstva:
+		Nije jedinstven. 
+		Nemoguce je izracunati string iz kog je nastao.
+
+Git nije nista drugo nego graf SHA1 stringova, od kojih svaki jedinstveno identifikuje neko stanje projekta i izracunati su iz tog stanja. 
+Osim SHA1 git uz svaki komit cuva i neke metapodatke kao na primer:
+	Datum i vreme nastanka
+	Komentar
+	SHA1 commit-a koji mu je prethodio
+	SHA1 commit-a iz kojeg su preuzete izmene za merge (samo ako je rezultat merge-a)
+	...
+
+SHA1 nije u potpunosti bezbedan zato se razmatra prelaz na SHA-256
+
+
+	Grane
+
+
+
+UDALJENI REPOZITORIJ (str 96)
+
+	
+	Naziv i adresa repozitorijuma
+		Prvo sto treba da uradimo je kloniranje nekog udaljenog repozitorijuma. 
+		Svaki udaljeni repozitorijum sa kojim zelimo komunicirati mora imati svoju adresu. 
+		Svaki udaljeni repozitorijum sa kojim cemo imati posla mora imati i svoje kratko ime (alias).
+		(Alias) je uglavno nesto poput <origin>.
+
+	Kloniranje repozitorijuma
+		Kloniranje je postupak kojim kopiramo ceo repozitorijum sa udaljene lokacije na nas lokalni racunar. 
+		Sa tako kloniranim repozitorijumom mozemo nastaviti rad kao sa repozitorijumom kojeg smo inicirali lokalno. 
+
+		Kopirati repozitorijum je jednostavno. Sve sto je potrebno uraditi je kopirati folder .git. 
+		A zatim na ovoj novoj kopiranoj lokaciji izvrsiti 
+		>>git checkout HEAD
+
+		Kloniranje je kopiranje udaljenog repozitorijuma, ali tako da novi (lokalni) repozitorijum ostaje "svestan" da je on kopija nekog udaljenog repozitorijuma. 
+	
+		
+
+ 
+	
