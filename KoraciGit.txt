@@ -76,4 +76,24 @@ Spremanje izmena (commit)
  	
 	Istorija projekta
 		git log --> da vidimo sve prethodne commitove
+			--> Napomena: Svaki commit ima svoj jedinstveni string
 		
+	
+	Ispravljanje zadnjeg commit-a
+		>>git add <fajl> --> dodamo u index fajl koji treba spojiti sa prethodnim commit-om
+		>>git commit --amend -m "Nova verzija, promenjen <fajl>"
+
+		Naredba --amend govori gitu da izmeni zadnji commit. 
+
+		
+	Git gui
+		>>git gui 	--> Gitgui je graficki prikaz gita, koji omogucava odredjene lagodnosti. 		
+				--> Veoma mocna stvar koja se treba dodatno izuciti
+
+	
+	Clean
+		git clean 	--> Brise dadoteke iz repozitorijuma			
+		git clean -n	--> Lista dadoteka koje ce biti obrisane sa naredbom git clean
+		git clean -x 	--> Brise sve dadoteke dodate u .gitignore
+
+	
