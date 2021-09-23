@@ -36,6 +36,8 @@ Komande
 	
 
 Spremanje izmena (commit)
+
+
 	U Gitu nikada ne commitamo u udaljeni repozitorijum. Svoje lokalne promene komitujemo, u lokalni repozitorijum na nasem racunaru. Interakcija sa udaljenim repozitorijumom je nesto drugo. 
 	
 	Status
@@ -53,7 +55,7 @@ Spremanje izmena (commit)
 			3) Poseban "medjuprostor" za commit --> privremeno stavljamo trenutno stanje fajlova pre nego sto ih komitujemo. 
 			
 			Ovo zadnje stanje, odnosto taj medjuprostor se zove index. (staging area ili cache)
-			
+		git	
 			>>git add <imeFajla>  --> daje nam status promena "Changes to be committed", umesto pre add komande (Changes not staged for commit)
 			
 			
@@ -95,5 +97,26 @@ Spremanje izmena (commit)
 		git clean 	--> Brise dadoteke iz repozitorijuma			
 		git clean -n	--> Lista dadoteka koje ce biti obrisane sa naredbom git clean
 		git clean -x 	--> Brise sve dadoteke dodate u .gitignore
+		
+		git clean -f	--> brise sve direktorijume prikazane sa git clean -n
+		git celan -f -- <direktorijum> samo odredjene dadoteke ili samo jedan direktorijum
 
+
+Grananje
+		Svaki cvor grafa je stanje projekta u nekom trenutku u njegovoj istoriji.
+	
+	Potpis grana projekta
+		>>git branch 	--> da vidimo grane naseg projekta
+				--> svaki git projekat u pocetku ima samo jednu granu i ona se uvek zove master.
+				--> !!! Grana u kojoj se nalazimo imace zvezdicu na pocetku
+
+	Nova grana
+		>>git branch <imeGrane> --> ovako pravimo novu granu sa imenom <imeGrane>
+	
+
+	Prebacivanje sa grane na granu
+		>>git checkout <imeGrane> 	--> prebacivanje sa grane na granu, moze i sa vise u nizu u hijerarhiji i obrnuto ime grane moze da nam bude npr. master da bi se vratili u master granu
+						--> u novoj grani vec imamo pristup fajlovim iz master grane
+
+				
 		
