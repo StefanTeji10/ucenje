@@ -36,6 +36,8 @@ Komande
 	
 
 Spremanje izmena (commit)
+
+
 	U Gitu nikada ne commitamo u udaljeni repozitorijum. Svoje lokalne promene komitujemo, u lokalni repozitorijum na nasem racunaru. Interakcija sa udaljenim repozitorijumom je nesto drugo. 
 	
 	Status
@@ -53,7 +55,7 @@ Spremanje izmena (commit)
 			3) Poseban "medjuprostor" za commit --> privremeno stavljamo trenutno stanje fajlova pre nego sto ih komitujemo. 
 			
 			Ovo zadnje stanje, odnosto taj medjuprostor se zove index. (staging area ili cache)
-			
+		git	
 			>>git add <imeFajla>  --> daje nam status promena "Changes to be committed", umesto pre add komande (Changes not staged for commit)
 			
 			
@@ -95,5 +97,56 @@ Spremanje izmena (commit)
 		git clean 	--> Brise dadoteke iz repozitorijuma			
 		git clean -n	--> Lista dadoteka koje ce biti obrisane sa naredbom git clean
 		git clean -x 	--> Brise sve dadoteke dodate u .gitignore
+		
+		git clean -f	--> brise sve direktorijume prikazane sa git clean -n
+		git celan -f -- <direktorijum> samo odredjene dadoteke ili samo jedan direktorijum
 
+
+Grananje
+		Svaki cvor grafa je stanje projekta u nekom trenutku u njegovoj istoriji.
 	
+	Potpis grana projekta
+		>>git branch 	--> da vidimo grane naseg projekta
+				--> svaki git projekat u pocetku ima samo jednu granu i ona se uvek zove master.
+				--> !!! Grana u kojoj se nalazimo imace zvezdicu na pocetku
+
+	Nova grana
+		>>git branch <imeGrane> --> ovako pravimo novu granu sa imenom <imeGrane>
+	
+
+	Prebacivanje sa grane na granu
+		>>git checkout <imeGrane> 	--> prebacivanje sa grane na granu, moze i sa vise u nizu u hijerarhiji i obrnuto ime grane moze da nam bude npr. master da bi se vratili u master granu
+						--> u novoj grani vec imamo pristup fajlovim iz master grane
+
+			--> Ukoliko imamo nekih izmena koje nismo commit-ovali moguce je da nam git nece dozvoliti prebacivanje
+			--> Najbolje je prebacivati se nakon sto smo uradili commit za sve izmene
+
+	Brisanje grane
+		>>git branch -D <imeGrane> 	--> Brise granu pod imenom <imeGrane>
+						--> Ne mozemo obrisati master granu!
+
+				--> Ne mozemo obrisati granu na kojoj se trenutno nalazimo	
+				--> Brisanjem grane ne brisemo njene ranije commit-ove, oni ostaju deo istorije. 
+
+	Preuzimanje dadoteka iz druge grane
+		>>git checkout <nazivGrane> -- <datoteka1> <datoteka2> ...
+		
+
+Preuzimanje izmena iz jedne u drugu granu
+	Preuzimanje izmena iz jedne grane u drugu naziva se merge!
+	Nakon merge-a dve grane nastavljaju svoje zivote, ne spajaju se u potpunosti. Samo se sve izmene u jednoj grani preuzimaju u drugu. 
+
+
+	Git merge
+		>> git merge <branchName> 	--> radimo iz grane u koju zelimo da merge-ujemo
+						--> ukoliko nema konflikata dobio poruku o odradjenom i automatski spajamo izmene, 
+						--> ukoliko ima konflikata treba da ih resimo
+						--> ukoliko merge prodje on automatski radi commit
+						--> Za razliku od prethodnih commit-a ovaj ima dava "roditelja", "prethodnika". 
+	
+
+		Resavanje konflikta
+			--> Autor edituje i izmeni kako zeli. Nakon toga je treba commit-ovati.
+			--> Drugi nacin je koristeci git mergetool. 
+			
+			>>git config --global merge.tool </putanja/do/programa>		--> C:\ProgramData\Microsoft\Windows\Start Menu\Programs
