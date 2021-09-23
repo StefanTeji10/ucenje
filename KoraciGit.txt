@@ -1,0 +1,79 @@
+GitHub: Getting Started
+https://tkrajina.github.io/uvod-u-git/git.pdf
+
+Osnovni pojmovi:
+	commit
+	push
+	fetch
+	conflict
+	origin repository
+	
+	
+	
+	
+Komande
+	git init 	--> inicijalizuje prazan Git repozitorijum u folderu u kom se trenutno nalazimo
+				--> stvoren je folder .git
+	
+	git help <naredba>
+	
+	git config <naredba>	--> Sva git konfiguracija se postavlja pomocu ove naredbe
+	git config --global <naziv> <vrednost>  --> Globalne konfiguracije one se postavljaju u fajl .gitconfig u home direktorijumu na nasoj lokalnoj masini
+	
+	git config <naziv> <vrednost> --> Postavlja lokalne postavke koje se stavljaju u .git direktorijum koji se nalazi u direktorijumu koji smo inicijalizovali sa git init
+	
+	git config --global color.ui auto --> Ispis git naredbi da bude obojen
+	git config --global color.ui always
+	
+	
+	git config --global merge.tool gvimdiff --> jedna od opcija koja odredjuje kako ce se program koristiti u slucaju kada se dogode konflikti (napredno)
+	
+	
+	
+.gitignore
+	Ukoliko postoje fajlovi koje ne zelimo da ukljucimo na git. Ovaj folder mi kreiramo u glavnom projektu (ne nekom od podirektorijuma), i jednostavno unesemo sta ne zelimo da bude deo projekta
+	
+	
+
+Spremanje izmena (commit)
+	U Gitu nikada ne commitamo u udaljeni repozitorijum. Svoje lokalne promene komitujemo, u lokalni repozitorijum na nasem racunaru. Interakcija sa udaljenim repozitorijumom je nesto drugo. 
+	
+	Status
+		>>git status --> salje nam da li postoje fajlovi koji na sebi imaju izmene i izlistava koje su promene
+		
+		>>git diff 	--> daje nam koje su tacne razlike izmedju fajlova
+					--> git ne zna da smo neku liniji izmenili, on staru prikazuje kao da smo je obrisali, i napravili novu
+		
+		>>git diff -U10 --> prikazuje 10 linija koda ili teksta u okolini izmene, a ne samo tu izmenjenju liniju kao u slucaju sa samo diff
+		
+	Indeks
+		Postoje tri razlicita "mesta" u kojima se cuvaju fajlovi, odnosno konkretna stanja pojedinih fajlova:
+			1) Git repozitorijum 			--> cuva razlicita stanja izmenjenog fajla
+			2) Radana verzija repozitorijuma 	--> je stanje fajlova u nasem folderu. OVo moze biti isto ili razlicito u odnosu na stanje fajloba u repozitorijumu. 
+			3) Poseban "medjuprostor" za commit --> privremeno stavljamo trenutno stanje fajlova pre nego sto ih komitujemo. 
+			
+			Ovo zadnje stanje, odnosto taj medjuprostor se zove index. (staging area ili cache)
+			
+			>>git add <imeFajla>  --> daje nam status promena "Changes to be committed", umesto pre add komande (Changes not staged for commit)
+			
+			
+		Uklanjanje iz indeksa
+		
+			>>git reset HEAD -- <fajl1> <fajl2>... 	--> izbacuje fajl iz indeksa
+			
+			>>git checkout HEAD -- <fajl1> <fajl2>...	--> ukoliko zelimo da vratimo stanje kakvo je u repozitorijumu, znaci da uklonimo izmene za koje smo se predomislili da comitujemo
+			
+	Prvi commit
+		git commit -m "Nova verzija" 	--> "Nova verzija" je komentar koji je neophodan za svaku izmenu, ovo comituje fajl u nas lokalni repozitorijum
+	
+
+	Dadoteke (fajlovi) koje ne zelimo u repozitorijumu
+		Prvo trebamo tu dadoteku koju zelimo da uklonimo da dodamo u .gitignore fajl. Njene promene nece uticati na git od tada ali ce i dalje biti u repozitorijumu. 
+		
+		git rm --cached <imefajla> --> dodaje u index ali sa stanjem za brisanje, sada tu izmenu treba commit da bi git znao da od ovog momenta pa na dalje ovaj fajl moze obrisati. 
+
+
+ 	
+	Istorija projekta
+		git log --> da vidimo sve prethodne commitove
+		
