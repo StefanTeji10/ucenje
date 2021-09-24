@@ -182,7 +182,7 @@ Preuzimanje izmena iz jedne u drugu granu
 	Cherry-pick
 		Posebna verzija merge
 		
-		>>git cherry-pick <commitString> --> merguje samo odredjeni commit, a ne celu granu i sve njene commitove
+		>>git cherry-pick <commitString> --> merguje samo odredjeni commit, znaci samo jedan odabrani commit i njegove promene, a ne celu granu i sve njene commitove
 
 	Merge bez commita
 		>>git merge <imeGrane> --no-commit 	--> odradjujemo merge ali ne i commit, sada mozemo sami commitati na nacin kako zelimo
@@ -229,6 +229,92 @@ SHA1 nije u potpunosti bezbedan zato se razmatra prelaz na SHA-256
 
 
 	Grane
+		
+	HEAD
+		HEAD je referenca na trenutni commit. 
+		Obicno je to poslednji commit u grani u kojoj se nalazimo, ali moze biti i neki drugi. 
+		Ukoliko pokazuje na commit koji nije poslednji u grani onda se naziva --> deatached HEAD
+		
+
+	.git direktorijum
+		.git/config
+		.git/objects 	--> ovaj direktorijum sadrzi sve verzije svih dadoteka i svih commit-ova naseg projekta. 
+				--> sadrzaj nekog objekta se moze pogledati sa komandom:
+
+				>>git cat-file <referenca>
+				>>git cat-file -t <referenca> --> tip objekta
+				>>git cat-file -p <referenca> --> tacan sadrzaj tog objekta
+
+				--> Postoje 4 vrste objekata: commit, tag, tree, blob
+		
+		.gif/refs	--> U ovom direktorijumu se nalaze reference na sve grane, tagove o grane udaljenih repozitorijuma koji se nalaze u .git/objects.
+
+		.git/HEAD	--> nije dadoteka nego simbolicki link na neku od dadoteka unutar gif/refs. I to na onu od tih dadoteka koja sadrzi referencu na granu u kojoj se trenutno nalazimo. 
+
+		.git/hooks	--> sadrzi shell skripte koje zelimo izvrsiti u trenutku kad se dogode neki vazni dogadjaji na nasem repozitorijumu. 
+				--> ovde mozemo da pisemo sktipte da nesto dodatno radimo
+				--> 	Na primjer, zelite li da se prije svakog commita izvrˇse unit testovi i poˇsalje mejl s
+					rezultatima, napraviti cete skriptu pre-commit koja to radi.
+		 
+
+
+ISTORIJA
+	diff
+		>>git diff <grana1> <grana2>	--> razlike izmedju dve grane
+		>>git diff <commit1> <commit2>	--> razlike izmedju dva commit-a
+
+		>>git diff HEAD~2 HEAD~1	--> razlika izmedju predzadnjeg i pred pred zadnjeg commit-a
+		>>git diff HEAD~2		--> razlika izmedju pred-predzadnjeg i sadasnjeg
+
+					--> moze i preko SHA1					
+
+	log
+		>>git log <referenca_na_commit>
+		>>git log <naziv grane>
+
+	whatchanged
+		>>git watchanged --> slicno kao i log
+
+
+
+
+	Gitk
+		pomocni program koji nam graficki prikazuje istoriju grane. 
+
+	Blame
+		>>git blame <datoteka> --> ko je kada sta menjao
+
+
+Preuzimanje datoteke iz istojire
+	git checkout <naziv_grane> -- <datoteka1> <datoteka2>
+
+	git checkout HEAD~5 -- <imeFajla> --> vratice nam stanje fajla pre tacno 5 commit-ova
+
+	git checkout <imeGrane>~1 -- <imeFajla> --> vratice nam fajl u predzadnjem commmit-u
+
+Vracanje celog stanja repozitorijuma u neki trenutak iz proslosti
+	git checkout HEAD~10 --> stanje kakvo je bilo pre 10 commit-ova
+
+
+Reset
+	git reset --hard HEAD~1 --> vraca sve u stanje proslog commita, i obrisati sadasnji
+
+	git reset --soft <referenca>
+
+Revert
+	git revert HEAD~1 	--> dodaje predhodni commit na naredni cvor grane, znaci nista ne uklanja
+
+Reference
+	~
+	^ --> daje nam referencu na roditelja, (sulacaj kada ih ima vise)
+	@ --> opisna oznaka vremena
+
+Reflog
+	git reflog --> istorija svih commit-ova na koje je pokazivao HEAD
+
+
+
+
 
 
 
@@ -245,13 +331,95 @@ UDALJENI REPOZITORIJ (str 96)
 		Kloniranje je postupak kojim kopiramo ceo repozitorijum sa udaljene lokacije na nas lokalni racunar. 
 		Sa tako kloniranim repozitorijumom mozemo nastaviti rad kao sa repozitorijumom kojeg smo inicirali lokalno. 
 
+		>>git clone <git://github.com/tkrajina/uvod-u-git.git>
+>
+
 		Kopirati repozitorijum je jednostavno. Sve sto je potrebno uraditi je kopirati folder .git. 
 		A zatim na ovoj novoj kopiranoj lokaciji izvrsiti 
 		>>git checkout HEAD
 
 		Kloniranje je kopiranje udaljenog repozitorijuma, ali tako da novi (lokalni) repozitorijum ostaje "svestan" da je on kopija nekog udaljenog repozitorijuma. 
 	
+		Ukoliko kloniramo udaljeni repozitorijum, on se za nas zove ORIGIN. 
+
+
+	Struktura udaljenog repozitorijuma
+		Kada kloniramo repozitorijum, mi sustinski posedujemo dva repozitorijuma.
+		Jedan na udaljenoj lokaciji, a drugi na lokalnom repozitorijumu. 
+
+		>>git branch -a 	--> novost je remotes/origin/master
+					--> ovo govori da imamo kopiju master grane udaljenog repozitorijuma na lokalnom repozitorijumu. 
+
+		Mi dobijamo u nasem repozitorijumu grane:
+		1) origin/master	--> Na ovoj grani samo se cuva kopija master grane sa udaljenog repozitorijuma lokalnu, NJU NE MENJAMO
+					--> ovaj direktorijum osvezavamo da vidimo nove izmene na udaljenom repozitorijumu.
+
+		2) master 		--> Ovde commitujemo nase izmene	
 		
 
- 
+ 	Delimicno kopiranje istorije repozitorijuma
+		Git clone skida celu istoriju, pa to moze nekada biti preveliko.
+
+		>> git clone --depth 5 --no-hardlinks <adresa>
+			delimicno kloniranje je zamisljeno da bismo skinuli kod nekog projekta samo da ga proucimo, a ne da bi na njemu nesto ozbiljno radili. 
+
+
+	Fetch
+		osvezavanje promena za origin/master (da li je bilo promena na udaljenom repozitorijumu)
+		
+		>>git fetch 
+
+		>>git merge origin/master  --> da dobijemo novo stanje u nasoj radnoj master grani
 	
+
+	Pull
+		git pull 	--> je ustvati skracenica za
+				>>git fetch  	--> pa zatim
+				>>git merge origin/master
+
+		!!! git pull je upravo kombinacija git fetch i git merge origin/master
+		
+
+	Push
+		Komanda koja menja nas udaljeni repozitorijum!!!
+		Napomena: Udaljeni repozitorijum mora biti tako konfigurisan da bismo mogli raditi git push!
+
+		Ukoliko nemamo ovlascenja, moramo pitati vlasnika repozitorijuma da li zeli da nase promene prihvati. 
+		To se zove pull request
+
+
+		Ukoliko imamo ovlascenja!:
+		>>git push origin master
+
+		Push tagova
+			Obican git push salje samo izmene u master grani, 
+			>>git push origin --tags
+
+			>>git push origin :refs/tags/<imeTaga>  --> za brisanje tagova, ali to treba izbegavati
+
+	Rebase origin/master
+		Zelimo li da se nasi f i g (iz prethodnog primera) vide u istoriji udaljenog projekta kao zasebni cvorovi
+			>>git chechotu master
+			>>git rebase origin/master
+			>>git push origin/master
+
+	Prisilan push
+		git push -f origin master
+
+	Rad sa granama (Strana 113)
+
+		Sta kada uradimo git clone i dobijemo da origin ima vise grana
+		
+		>>git checkout origin/<grana>
+		>>git branch <grana>
+		>>git checkout <grana>
+
+		Poslednje dve komande su skraceno 
+		>>git checkout -b <grana>
+		
+
+-------------------------------------------------------------------------------------------------
+Adding existing project on GitHub
+
+
+-------------------------------------------------------------------------------------------------
