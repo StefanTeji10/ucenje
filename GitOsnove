@@ -27,7 +27,27 @@ Da bi videli nas fajl sa global settings
 >>> git config --global core.editor "code --wait --new-window"        (extra options: we want new window, and git will wait until our opened VS window is closed after editing)
 >>> git config --edit --global        (otvara fajl sa global settings)
 -------------------------------------------------------------------------------------------------------------
-4. SSH
+4. Interaction with GitHub (Full circle)
+-------------------------------------------------------------------------------------------------------------
+>>> git clone                   (From GitHub repo to Working directory)
+>>> git add                     (Add to staging area from Working Directory)
+>>> git commit                  (commiting files to .git repo)
+>>> git push                    (Pushing commited files to GitHub repo) --> it can make a conflict
+-------------------------------------------------------------------------------------------------------------
+5. Interaction with GitHub (pratical)
+-------------------------------------------------------------------------------------------------------------
+>>> git clone [link]
+>>> git add .                   (adding new files)
+>>> git commit -m "message"     (commit changes)
+>>> git push origin main        (We want to push this changes to origin, that is our remote, and I want to go to the main branch)
+-------------------------------------------------------------------------------------------------------------
+6. Conflicts
+-------------------------------------------------------------------------------------------------------------
+>>> git push
+>>> git fetch                   (From GitHub repo to check with the commited changes)
+>>> git pull                    (Fetch and Merge in one go)
+-------------------------------------------------------------------------------------------------------------
+7. SSH
 -------------------------------------------------------------------------------------------------------------
 >>> ls -al ~/.ssh                           (Proveravamo da li imamo instaliran SSH)
 >>> ssh-keygen -t rsa -b 4096 -c "email"    (Pravljenje novog SSH kljuca)   
