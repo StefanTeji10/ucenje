@@ -1,0 +1,39 @@
+-------------------------------------------------------------------------------------------------------------
+*. Korisne komande
+-------------------------------------------------------------------------------------------------------------
+>>> mkdir [path/ime_direktorijuma]    (pravljenje novog direktorijuma)
+>>> ls -al                            (Pregled sadrzaja trenutnog direktorijuma)
+>>> git log                           (Pregled poslednjih commitova)
+-------------------------------------------------------------------------------------------------------------
+1. Pavljenje praznog git repozitorijuma
+-------------------------------------------------------------------------------------------------------------
+>>> git config --global user.name +++
+>>> git config --global user.email +++
+
+Da bi videli nas fajl sa global settings
+>>> git config --edit --global 
+
+>>> git init
+-------------------------------------------------------------------------------------------------------------
+2. Staging (locally)
+-------------------------------------------------------------------------------------------------------------
+>>> git status
+>>> git add .   or (name of file)
+>>> git commit -m "message"
+-------------------------------------------------------------------------------------------------------------
+3. Setting the default editor (Visual Studio Code)
+-------------------------------------------------------------------------------------------------------------
+  a) add environmental variable \Microsoft VS Code\bin
+>>> git config --global core.editor "code --wait --new-window"        (extra options: we want new window, and git will wait until our opened VS window is closed after editing)
+>>> git config --edit --global        (otvara fajl sa global settings)
+-------------------------------------------------------------------------------------------------------------
+4. SSH
+-------------------------------------------------------------------------------------------------------------
+>>> ls -al ~/.ssh                           (Proveravamo da li imamo instaliran SSH)
+>>> ssh-keygen -t rsa -b 4096 -c "email"    (Pravljenje novog SSH kljuca)   
+>>> eval $(ssh-agent -s)                    (Provera da li ssh-agent radi)
+>>> ssh-add ~/.ssh/id_rsa                   (adding ssh)
+https://app.pluralsight.com/course-player?clipId=f6ae7104-611a-4a14-a5a9-2e7cc66195ba
+>>> ssh -T git@github.com
+
+
