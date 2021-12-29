@@ -1,0 +1,98 @@
+cygwin
+install
+1. gcc-core
+2. gdb
+3. libgdbm4
+4. make
+
+cmd Windows
+>>> cygcheck -c cygwin          (to see current version of cygwin on our machine)
+>>> gcc --version               (to see version of our gcc compiler)
+
+------------------------------------------------------------------------------------
+                            Visual Studio Code
+------------------------------------------------------------------------------------
+C/C++ for Visual Studio Code (Extension)
+
+You need to create workspace for your compiler!!!
+
+Making the VSC workspace for C
+Ctrl + Shift + P --> C/C++ Edit Configuration (UI)
+
+1. Setting the compiler path
+>>> C:/cygwin64/bin/gcc.exe
+
+2. IntelliSense mode
+>>> gcc-x64
+
+This will create new c_cpp_propertioes.json file
+
+Setting build task
+Ctrl + Shift + P --> Task: Configure Default Build Task
+This will create task.json --> others --> here we are putting arguments for compilation
+Example: 
+>>> "label": "build hello world",
+>>> "command": "gcc",
+>>> "args": [
+   "-g", 
+   "-o",
+   "helloworld",
+   "helloworld.c"
+],
+>>> "group": {
+   "kind": "build",
+   "isDefault": true
+}
+
+Create a debug launch.json task
+Ctrl + Shift + P --> Debug: Open launch.json
+>>> C++ (GDB/LLDB)
+This is opening new file launch.json
+>>> "program": "${workspaceFolder}/helloworld.exe",
+>>> "stopAtEntry": true,
+>>> "miDebbugerPath": "C:/cygwin64/bin/gdb.exe",
+
+Setting a shell bash 
+Ctrl + Shift + P --> Preferences: Open Settings (JSON)
+setting.json
+>>> "terminal.integrated.shell.windows": "C:\\cygwin64\\bin\\bash.exe",
+
+Creating source file
+File --> New file --> helloworld.c in our workspace
+
+Building program, compiling
+Ctrl + Shift + B
+
+To show the output
+.\helloworld.exe
+
+Testing a debuger
+Setting a break point
+F5 button
+
+---------------------------------------------------------------------------------------------------------
+Working with larger programs
+---------------------------------------------------------------------------------------------------------
+Da bi ubacili jos jedan file moramo menjati nas tasks.json
+
+1. Command line (Terminal) building with multiple files
+>>> gcc main.c other.c -o main
+or
+>>> gcc *.c -o main
+
+2. Changing tasks.json
+Adding to the args []
+>>> "other.c"             (other je samo ime fajla koji dodajemo)
+
+Moramo ubaciti nove .c fajlove koje zelimo da kompajliramo u build target
+
+---------------------------------------------------------------------------------------------------------
+Makefiles
+---------------------------------------------------------------------------------------------------------
+Useful links: https://makefiletutorial.com/
+
+
+
+
+
+
