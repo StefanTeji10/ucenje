@@ -41,13 +41,20 @@ Da bi videli nas fajl sa global settings
 >>> git commit -m "message"     (commit changes)
 >>> git push origin main        (We want to push this changes to origin, that is our remote, and I want to go to the main branch)
 -------------------------------------------------------------------------------------------------------------
-6. Conflicts
+6. Working with multiple people on a same repository
 -------------------------------------------------------------------------------------------------------------
->>> git push
->>> git fetch                   (From GitHub repo to check with the commited changes)
->>> git pull                    (Fetch and Merge in one go)
+>>> git status                  (it still doesn't know about changes that are made on GitHub repository)
+>>> git fetch                   (to see is there any changes on the Github repository, on remote repository)(this will pull changes to our git database but not to our working directory)
+>>> git status                  (now we see if there was changes in GitHub repository comparing to our last clone)
+>>> git pull                     (if there is no conflicts it will put changes to our working directory)
+>>> git push origin main
 -------------------------------------------------------------------------------------------------------------
-7. SSH
+7. Conflicts if both files local and remote are changed
+-------------------------------------------------------------------------------------------------------------
+>>> git pull
+>>> git push origin main
+-------------------------------------------------------------------------------------------------------------
+8. SSH
 -------------------------------------------------------------------------------------------------------------
 >>> ls -al ~/.ssh                           (Proveravamo da li imamo instaliran SSH)
 >>> ssh-keygen -t rsa -b 4096 -c "email"    (Pravljenje novog SSH kljuca)   
