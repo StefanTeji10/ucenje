@@ -5,4 +5,39 @@ Extensions: >>> esp-idf >>> Espressif IDF >>> install
 
 Ctrl + Shift + P >>> Configure ESP-IDF Extension
 
+-----------------------------------------------------------------------------------------
+Everything you need to know for setting a new project
+-----------------------------------------------------------------------------------------
+To configure intelliSense 
+>>> .vscode >>> settings.json >>> "C_Cpp.intelliSenseEngine": "Default",
+
+>>> .vscode >>> c_cpp_properties.json >>> add >>> "compileCommands": "${workspaceFolder}/build/compile_commands.json"
+
+
+------------------------------------------------------------------------------------------
+Adding new component to project
+------------------------------------------------------------------------------------------
+
+
+
+
+------------------------------------------------------------------------------------------
+Adding Arduino components to project
+------------------------------------------------------------------------------------------
+>>> mkdir -p components
+>>> git clone https://github.com/espressif/arduino-esp32.git arduino
+>>> cd arduino
+>>> git submodule update --init --recursive
+>>> cd ../../
+>>> make menuconfig
+
+Otvaramo menuconfig
+>>> Arduino Configuration >>> Include only specific Arduino libraries
+                          >>>
+
+>>> Serial flasher config >>> Flesh size 4 MB
+                          >>> Use compressed upload >>> 921600 baud
+                   
+>>> Example Configuration >>> (myssid) WiFi SSID
+                          >>> (mypassword) WiFi Password
 
