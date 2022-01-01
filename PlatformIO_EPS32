@@ -1,0 +1,5 @@
+----------------------------------------------------------------------------------------------------
+Using Menuconfig
+----------------------------------------------------------------------------------------------------
+We can rum menuconfig when we are working in Espressif ESPIDF framework
+PlatforIO extension icon >>> PROJECT TASK >>> esp32dev >>> Platform >>> Run Menuconfig
