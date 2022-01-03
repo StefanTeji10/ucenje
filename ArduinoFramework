@@ -1,0 +1,4 @@
+https://github.com/espressif/arduino-esp32/blob/ef99cd7fe7778719c92d6f8df0f10d3f0f7aa35e/tools/sdk/include/config/sdkconfig.h#L23
+default sdkconfig fajl za Arduino Framework
+
+https://github.com/espressif/arduino-esp32/issues/4852 --> Issue for using Nimble and not Blueroid with Arduino Framework
