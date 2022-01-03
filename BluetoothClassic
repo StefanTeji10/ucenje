@@ -1,0 +1,130 @@
+-------------------------------------------------------------------------------------------------
+https://learn.sparkfun.com/tutorials/bluetooth-basics/all
+-------------------------------------------------------------------------------------------------
+Bluetooth je: low power, short range, low datarate
+Bluetooth se odrzava od strane Bluetooth SIG (Special Interest Group)
+Bluetooth SIG je grupa od 30+ kompanija... Oni odrzavaju i Bluetooth Classic i Bluetooth BLE
+
+Bluetooth spec
+2.4 - 2.4835 GHz (ISM band) Industrial Sientific and Medical
+2 MHz guard band at a low end, and 3.5 MHz on the Top end
+79 channels, spaced at 1 MHz, and they starts at 2.4 GHz
+
+Modulation Schemes used:
+GFSK - Gaussian Frequency Shift Key (1 Mb/s)
+Pi/4 DQPSK - Differential Quadrature Phasial Shift Keying (2 Mb/s)
+8 DPSK - Differential Phasial Shift Keying (3 Mb/s)
+
+HS - High Speed --> WiFi, 25 Mb/s
+
+General Topology - Bluetooth
+Master/Slave
+* Up to 7 slaves in a Piconet
+* "Park" slaves
+
+Bluetooth uses FHSS - Frequency Hoping Spread Spectrum
+  * FHSS hops around frequencies 1600 hops/s (hops per second)
+  * Pseudorandom sequence, seeded by Master MAC address
+  * Timing is determined by master's CLK
+  
+  Bluetooth classic uses TDM (Time domain multiplexing)
+  Master sets time stamps, each one is 625 uS
+  
+ There are two different kinds of connection that we are looking here:
+ * SCO - Synchronous Connection Oriented
+ * ACL - Asynchronous Connection-Less
+ 
+ Generic form of a data format 
+  72 bits      ---      54      ---       0-2744
+ Access code   ---    Header    ---      Payload
+ 
+ Access Code
+  4         ---       64        ---   4
+  preamble  --- Synchronization --- Trailer
+  Note: Synchronization is derived from Master's ID
+  
+ Header
+    3     ---   4   ---   1   ---   1   ---   1  --- 8
+ AM_ABDR  --- type  --- Flow  --- ARQN  --- SEQN --- HEC
+ Note:
+ AM_ABDR - active member address
+ Type - 12 packet types, 4 control types 
+ HEC - Header Error Check
+ 
+ Conection Sequence
+ State Machine that bluetooth is doing durring the connection sequence
+ There are basically two states that it can exists in. Two primary states.
+ 1. Stand-by state
+ 2. Connected
+ And in between those two you have a number of other things:
+ * page and master response
+ * page scan and slave response
+ * INQ (Inquery)
+ * INQ Scan and INQ response
+ Those are various roads between Stand-by state and Connected state
+ 
+Describtion of connection sequence:
+1. Slave need to be put into the discoverable mode
+* being discoverable means that if it gets an inquery from Master device, the device that wants to connect, he will respond
+* What slave is listening to: The slave device will listen to 32 INQ channels
+* Master will separate those 32 frequences into 16 frequency trains, and Master will cycle through those 2 frequency trains and it will sent out ID packets with GIAC 
+(General Inquary Access Code)
+2. When the slave hears the Master device, it will back off (stop doing anything for a little bit) and then it will send an Inquary response that includes:
+- FHS (Frequency hopping sequence)
+- it's own ID
+- It's own clock
+3. And when Master picks this message (Inquary response) it goes to PAGE mode, and the slave is going to Page Scan mode
+* When Master is in the PAGE mode, it will address this slave device on a new hopping sequence (which is derived from FHS (previous message from slave to master))
+* Master is sending page
+4. Slave response with DAC (Device Access code)
+5. Master response with FHS (it's frequency hopping sequence) --> now we are going to third hopping sequence which is based on the Masters ID, and Masters clock
+6. Slave gives one more response with locale device access code, after which it is switching to the masters hopping sequence...
+CONNECTED!!!
+
+Slave in connected State: There are 4 modes of function
+1. Active mode, where everything is happening
+2. "sniff mode", it is listening to reduces number of time slots
+3. Hold mode, No ACL, and it will do SCO, reduced power
+4. Parked mode sit down and shut up
+
+
+Profiles:
+* Profile defines attributes, services and formats... basically defines how you talk to the bluetooth radio at a high level nad what kind of 
+  services and perforamnce you shoud expect
+* doezens of profiles (Developer needs to choose) --> 
+  * SPP (Serial port protocol)  --> put data in and get data out :-) two way link
+  
+  
+Bluetooth stack
+From the top:
+HOST STACK  ---> this is happening outside of a bluetooth chip, high devices
+1. Application leyer
+2. Huge number of protocols: 
+Example:  a) TCS - telephonie controlled protocol specification
+          b) OBEX - Object Exchange                        ----> these are followed by RF COMM (RF comm is a serial link)
+          3) WAP - Wireless Application protocol          -----> these are followed by RF COMM
+          4) SDP - Service discovery protocol
+3. Logical Link Central + Adaption Protocol (L2Cap) ---> it takes data from each protocols [i podesava te podatke tako da HCI Host Controller moze da ih procita] 
+END OF HOST STACK
+CONTROLLER STACK ---> on a bluetooth chip
+4. HCI - Host Controller Interface  ---> At commands ...
+5. Linked menager protocol
+6. Baseband Link Controller
+7. Radio
+END OF CONTROLLER STACK
+-------------------------------------------------------------------------------------------------
+https://learn.sparkfun.com/tutorials/bluetooth-basics/all end
+-------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+ 
+ 
+ 
+
