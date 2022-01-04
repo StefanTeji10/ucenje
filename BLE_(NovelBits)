@@ -1,0 +1,48 @@
+https://www.youtube.com/watch?v=JSQhRyTKnW4
+The Ultimate Bluetooth Low Energy (BLE) Tutorial
+https://www.novelbits.io/introduction-to-bluetooth-low-energy-book/
+
+Important facts about BLE:
+1. Low Power Consumption
+2. Operates in ISM Band (2.4 GHz) (Industrial, Scientific and Medical)
+3. Radio Spectrum split into 40 Channels (3 primary Advertisement channels, 37 are used for secondary advertisement data, as for data transfer during connection)
+
+Properties of BLE
+1.  Range: It depends on configuration, from few meters up to 1 km. The specific mode that allowes you to achieve over 1 km in 
+    range utilizes a method for data recovery called forward Error Correction (FEC)
+    Taj metod Forward Error Correction povecava domet bez potrebe da se povecava prenosna moc, tj potrosnja. 
+2.  Power Consumption, BLE uspeva da ima malu potrosnju time sto iskljucuje radio koliko je to moguce. 
+     U sustini pali ga samo da posalje i primi podatke, a onda ide u sleep do sledeceg slanja ili primanja.
+3.  Data Throughput - Highest data for the radio is 2Mbit mode (2M PHY Mode), so the acctual date is even lower because of the overhead
+    So for application data rateis up to 1.4 Mbps Data rate
+4.  Adaptive Frequency Hopping - ovo omogucava BLE uredjajima da dinamicki izbegnu intereferenciju i sudaranje sa drugim BLE uredjajima u 2.4MHz spekru 
+    
+
+
+Four most important concepts in BLE
+1. Pheripherals & Central
+2. Advertising & Scanning
+3. Connections
+4. Characteristics & Services
+
+1. Pheripherals & Central
+Pheripherals is a device that sends out advertisement data for other devices to discover it. Whether that to connect data or just to read it's advertisement data.
+Central, on the other hand, is device that discovers these advertisement packets and it could in some case if the adertisement packet allows it to connect to that device.
+
+Note: One very popular usecase of the bluetoothe devices that advertise and do not allow conection is in bluetooth beacons. 
+These are used in retail marketing, indoor navigation and many other applications
+
+Central is the device that takes on the heavy lifting in terms of controlling the timing and the pharameters of the BLE connection. Consumes more power. 
+BLE nezavisno od toga koja mu je uloga (centra ilil peripheral) moze biti konektovan sa vise uredjaja. 
+Ovo znaci da central moze biti povezan sa vise peripherals, ili da peripherals moze imati konekciju ka mnogobrojim centrals. 
+Dok postoje uredjaji, npr smtrfoni, koji mogu imati konekciju sa obe vrste uredjaja u isto vreme (cetrals and peripherals). 
+
+
+Advertising and Scanning
+Kada periferija posalje podatke koji se nazivaju "advertisement packets", za druge uredjaje da ga otkriju. 
+Ovo znaci da da vodi ka konekciji ili moze biti obicno otkrivanje uredjaja i citanja nekih Advertisement podataka. 
+
+
+
+
+https://www.youtube.com/watch?v=1I1vxu5qIUM
