@@ -1,0 +1,151 @@
+https://learn.adafruit.com/introduction-to-bluetooth-low-energy/gap
+
+GAP - Generic Access Profile
+On kontrolise konekcije i oglasavanje putem Bluetootha. Pomocu GAP-a uredjaj postaje vidljiv spoljasnjem svetu. 
+GAP odlucuje i da li ce dva uredjaja mmoci ili nece moci da komuniciraju jedan sa drugim.
+
+GAP definise mnogobrojne uloge za uredjaje, ali dva glavna koncepta koja treba imati na umu su Centralni uredjaji i Periferijski uredjaji.
+Prtiferijski uredjaji su uglavnom mali, male potrosnje, sa ogranicenim resursima. Oni se konektuju na mnogo mocnije Centralne uredjaje.
+Centralni uredjaji su uglavnom mobilni telefoni ili tableti sa mnogo vise procesorske moci. 
+
+ADVERTISING AND SCAN RESPONSE DATA
+
+Postoje dva nacina da za slanje oglasavanja sa GAP. 
+1. Advertising Data payload  
+2. Scan Response payload
+
+Oba payload su po velicini identicna i mogu sadrzati 31 bajt podataka, ali samo Advertising Data payload je obavezan.
+Obavezan je iz razloga sto se ovaj payload konstantno salje od strane uredjaja, kako bi Centralni uredjaji mogli da ga uoce njegovo prisustvo. 
+Scan response payload je opcionalan sekundarni payload koji centralni uredjaji mogu da zatraze. 
+Na ovaj nacin tvorci perifernog uredjaja mogu da dodaju jos informacija pored Advertising payloada kao sto su string koji predstavlja ime uredjaja. 
+
+Advertising Process - Proces oglasavanja
+Periferija ce setovati interval ogralsavanja, i svaki put kada ovaj interval prodje, ponovo ce obajviti Advertising Data Payload.
+Sto je duzi interval to ce se vise stedeti energija, ali ce konekcija imati sporiji odziv ako uredjaj emituje poruku svakih 2 sekunde umesto 20 ms.
+Ako uredjaj koji osluskuskuje (centralni uredjaj) bluetooth spektar postane zainteresovan za scan process payload 
+(i naravno taj scan process payload postoji na periferijskom uredjaju) moze opciono da zatrazi taj dodatni set podataka. 
+Nakon tog zahteva periferijski uredjaj salje i te "scan resposne data" podatke.
+
+
+BROADCAST NETWORK TOPOLOGY
+U vecini slucajeva periferni uredjaji se oglasavaju sa namerom da uspostave konekciju. 
+Nakon konekcije, tada koristimo GATT servise i karakteristike (oni omogucavaju mnogo vecu razmenu podataka u oba smera).
+Postoje i slucajevi kada samo zelimo da oglasimo podatke. 
+
+Glavna uloga ovoga je kada zelimo da periferija posalje podatke na vise razlicitih uredjaja istovremeno. Ovo je jedino moguce uz pomoc Advertising paketa, 
+iz razloga sto podaci koji se salju ili primaju u konektovanom rezimu mogu biti vidjeni samo od strane dva medjusobno konektovana uredjaja. 
+
+Ukljucivajuci malu kolicinu proizvoljnih podataka u 31 bajt oglasavajuceg (advertising) payloada ili 31 bajt scanning respons payload-a, 
+mozemo koristiti jeftini bluetooth BLE periferijski uredjaj da jednosmerno salje podatke ka svim drugim uredjajima u konekcionom opsegu. 
+Ovaj nacin komunikacije se naziva Bradcasting in BLE.
+
+Ovaj nacin komunikacije se koristi od strane Apple iBeacon. On ubacuje proizvoljne podatke u glavni Oglasavajuci (Advertising) paket, koristeci polje Manufactured Specific Data.
+--------------------------------------------------------------------------------
+Connected mode
+--------------------------------------------------------------------------------
+Kada se jednom ostvari konekcija izmedju periferijskog i centralnog uredjaja, proces oglasavanja ce generalno prestati i vise nece biti moguce pronaci vec konektovani periferijski uredjaj.
+Dva medjusobno konektovana uredjaja ce koristiti GATT servise i karakteristike da komuniciraju u oba pravca. 
+
+=========================================================================================================================================
+GATT - Generic Attribute Profile    (GAP - Generic Access Profile)
+=========================================================================================================================================
+GATT definise nacin kako dva BLE uredjaja salju podatke jedan prema drugom koristeci koncepte po nazivu Services i Characteristics. 
+GATT koristi genericki data protocol Attribute Protocol (ATT), koji se koristi da skladisti Servise, Karakteristike 
+i povezane podatke u jednostavnoj look up tabeli koristeci 16-bit IDs za svaki unos u tabelu.
+
+GATT pocinje da deluje kada se uspostavi konekcija izmedju dva uredjaja, sto ustvari znaci da su dva uredjaja vec prosla kroz proces konekcije koristeci GAP. 
+Najvaznija stvar koju treba imati na umu kada se radi sa GATT i konekcijama je da su konekcije ekskluzivne. 
+To znaci da BLE periferija moze biti konektovana sa samo jednim centralnim uredjajem u isto vreme.
+Od trenutka kada se periferija konektuje sa centralnim uredjajem, ona ce prestati da se oglasava ka drugim uredjajima, 
+to znaci da taj periferijski uredjaj nece biti vidljiv, sve dok postoji konekcija.
+
+Uspostavljanje konekcije je takodje jedini nacin da se dozvoli dvosmerna komunikacija, uz pomoc koje centralni uredjaj moze poslati podatke perifernom uredjaju i obrnuto naravno. 
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Connected Ntework Topology
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Periferijski uredjaj moze biti konektovan sa samo jednim centralnim uredjajem. Ali sa druge strane, centralni uredjaj moze biti konektovan sa mnogobrojnim periferijama. 
+Ukoliko je potrebno da se razmene podaci izmedju dve periferije, neophodno je da centralni uredjaj u tome posreduje. 
+Kada se ostvari konekcija izmedju perifernog i centralnog uredjaja, komunikacija moze biti u oba smera, 
+sto je razlicito u odnosu na jednosmerno slanje podataka koristeci samo Advertising data i GAP. 
+
+----------------------------------------------------------------------------------------------------------------------------------------
+GATT Transactions
+----------------------------------------------------------------------------------------------------------------------------------------
+Bitan koncept za razumevanje u radu sa GATT je server/client relationship.
+
+!!!
+Periferije su poznate kao GATT server, one drze ATT lookup podatke i definicije servisa i karakteristika. 
+GATT klijent (centralni uredjaj) sa druge strane salje zahteve i upite ka serveru (periferijski uredjaj).
+
+Sve transakcije pocinju od strane glavnog uredjaja GATT klijenta (centralnog uredjaja), koji prima odgovor od sekundarnog uredjaja, tj GATT servera. 
+U toku uspostavljanja konekcije, periferijski uredjaj ce sugerisati "Connection interval" centralnom uredjaju. Centralni uredjaj ce pokusati da se konektuje tj. 
+rekonektuje svaki "Connection interval" da bi video da li ima dostupnih podataka. Vazno je imati na umu da je ovaj "Connection interval", samo predlog.
+Centralni uredjaj mozda nece biti u mogucnosti da ispostuje sugestiju zato sto moze biti zauzet komunicirajuci sa drugom periferijom ili potrebni sistemski resursi jednostavno nisu dostupni. 
+
+Objasnjenje:
+1. Periferijski - GATT Server ---> Slave
+2. Centralni - GATT klijent   ---> Master
+Tokom jednog Connection intervala:
+Prvo, Master (Uredjaj 2) salje "Send Request"
+Zatim, Slave (Uredjaj 1) salje "Send Response"
+Ovako se ponavlja svaki connection interval
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+Services and Characteristics
+-----------------------------------------------------------------------------------------------------------------------------------------------
+GATT transakcije u BLE se baziraju na ugnjezdenim objektima visokog nivoa koji se po hijerarhijskom redosledu nazivaju PROFILES, SERVICES and CHARACTERISTICS.
+Objesnjenje modela:
+___________________
+Profile:
+```````````
+  *Service:
+  ---------
+    *Characteristic
+    *Characteristic
+    *Characteristic
+  *Service:
+  ---------
+    *Characteristic
+    *Characteristic
+____________________    
+
+
+------------------------
+Profiles
+------------------------
+Profili ustvari uopste ne postoje na BLE periferijama. 
+Oni su ustvari samo predefinisane kolekcije Servisa koje su sastavljene od strane organizacije Bluetooth SIG ili od strane kreatora neke periferije.
+Kompletna lista oficijalno prihvacenih profila baziranih na GATT moze se videti na linku: 
+https://www.bluetooth.com/specifications/specs/
+
+------------------------------------------------------
+Services
+------------------------------------------------------
+Servisi se koriste da podele podatke u logicke entitete. Servisi sadrze specificne delove podataka koji se nazivaju karakteristike. 
+Servis moze imati jednu ili vise karakteristika. Svaki servis se razlikuje od drugih usluga pomocu jedinstvenog numerickog ID-a koji se naziva UUID.
+UUID moze biti 16-bitni (za zvanicno usvojene BLE servise) ili 128-bitni (za prilagodjene usluge).
+
+Potpuna lista oficijalno prihvacenih BLE servisa --> https://www.bluetooth.com/specifications/assigned-numbers/
+
+------------------------------------------------------
+Karakteristike
+------------------------------------------------------
+Karakteristike su koncept najnizeg nivoa u GATT transakcijama. Ona obuhvata jednu celinu podataka (iako moze da sadrzi niz povezanih podataka, kao na primer X/Y/Z vrednosti za 3 ose) 
+Slicno servisima svaka karakteristika se yalikuje od neke druge po svom predefinisanom 16-bitnom ili 128-bitnom UUID. 
+Slobodno se mogu upotrebljavati standardne karakteristike definisane od strane Bluetooth SIG ---> https://www.bluetooth.com/specifications/assigned-numbers/
+Ove predefinisane karakteristike osiguravaju interoperabilnos preko HW/SW sa BLE. Takodje moguce je kreirati i proizvoljnu karakteristiku koju samo tvoja periferija i softver mogu da razumeju. 
+
+Karakteristike su glavna tacka u kojoj cete komunicirati sa BLE perifernim uredjajem, tako da je vrlo vazno dobro razumeti ovaj koncept. 
+Karakteristike se koriste za slanje podataka u oba smera.
+
+
+
+
+
+
+
+
+
+
+
